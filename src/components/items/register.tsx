@@ -138,7 +138,7 @@ export function RegisterItems({ item = { id: '', name: '', description: '', cate
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {categories.map((category, i) => (
+                    {(categories || []).map((category, i) => (
                       <SelectItem value={category.categoryId.toString()} key={i}>{category.name}</SelectItem>
                     ))}
                   </SelectContent>

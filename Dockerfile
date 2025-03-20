@@ -2,6 +2,9 @@ FROM node:20 as builder
 
 WORKDIR /app
 
+ARG API_BASE
+ARG BACKEND_SERVER
+
 COPY package.json package-lock.json components.json \
 eslint.config.mjs next.config.ts postcss.config.mjs tsconfig.json ./
 COPY src src
