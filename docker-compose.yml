@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  next:
+    build: ./
+    restart: always
+    environment:
+      API_BASE: "${API_BASE:-http://localhost:3000}"
+      BACKEND_SERVER: "${BACKEND_SERVER:-http://localhost:8080}"
+    ports:
+      - "3000:3000"
