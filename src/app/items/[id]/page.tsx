@@ -6,18 +6,9 @@ export default async function Home({
 }: {
   params: Promise<{ id: string }>
 }) {
-
-  let data  
-  try {
-    const { id } = await params
-    const res = await fetch(`${process.env.API_BASE}/api/v1/items/${id}`)
-    if (!res.ok) throw new Error('Failed to fetch data')
-    data = await res.json()
-  } catch (error) {
-    console.log(error)
-  }
+  const { id } = await params
 
   return (
-    <ItemsDetail item={data} />
+    <ItemsDetail id={id} />
   )
 }

@@ -9,15 +9,24 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { useRouter } from 'next/navigation'
-import { Items } from '@/types/items'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { Items } from '@/types/items'
 
-type Props = {
-  items: Array<Items>
-}
-
-export function ItemsList({ items }: Props) {
+export function ItemsList() {
   const router = useRouter()
+  const [items, setItems] = useState<Array<Items>>([])
+  const [isLoading , setIsLoading ] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/v1/items/')
+      .then((res) => res.json())
+      .then((data) => {
+        setItems(data)
+        setIsLoading(false)
+      })
+  }, [])
+
   return (
     <div className="px-12 py-4">
       <h1 className="border-b-3 p-2 mb-4 font-semibold text-lg">
@@ -36,7 +45,8 @@ export function ItemsList({ items }: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.length < 1 && <TableRow><TableCell>データがありません。</TableCell></TableRow>}
+        { isLoading  && <TableRow><TableCell>データを取得しています。</TableCell></TableRow>}
+        { !isLoading  && items.length < 1 && <TableRow><TableCell>データがありません。</TableCell></TableRow> }
           {items.map((item, i) => (
             <TableRow
               key={i}

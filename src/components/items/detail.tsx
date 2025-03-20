@@ -2,15 +2,25 @@
 import { Items } from '@/types/items'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DialogDetail from '@/components/dialog'
 
 type Props = {
-  item: Items
+  id: string
 }
 
-export function ItemsDetail({ item }: Props) {
+export function ItemsDetail({ id }: Props) {
+  const [isLoading , setIsLoading ] = useState(true)
   const router = useRouter()
+  const [item, setItem] = useState<Items>({id:'', name:'', description: '', categoryId: '', categoryName: ''})
+  useEffect(() => {
+    fetch(`/api/v1/items/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setItem(data)
+        setIsLoading (false)
+      })
+  }, [id])
 
   const initModalTitle = '削除してよろしいですか？'
   const [completed, setCompleted] = useState(false)
@@ -60,24 +70,26 @@ export function ItemsDetail({ item }: Props) {
       />
       <Link href={`/items/${item.id}/edit`} className="cursor-pointer underline">情報を編集する</Link>
       </div>
-      <div className="space-y-4 border rounded px-4 py-3 mx-2">
-        <dl>
-          <dt className="font-semibold">ID</dt>
-          <dd>{item.id}</dd>
-        </dl>
-        <dl>
-          <dt className="font-semibold">名前</dt>
-          <dd>{item.name}</dd>
-        </dl>
-        <dl>
-          <dt className="font-semibold">説明</dt>
-          <dd>{item.description}</dd>
-        </dl>
-        <dl>
-          <dt className="font-semibold">カテゴリ</dt>
-          <dd>{item.categoryName}</dd>
-        </dl>
-      </div>
+      { isLoading  ? <div>データを取得しています。</div> :
+        <div className="space-y-4 border rounded px-4 py-3 mx-2">
+          <dl>
+            <dt className="font-semibold">ID</dt>
+            <dd>{item.id}</dd>
+          </dl>
+          <dl>
+            <dt className="font-semibold">名前</dt>
+            <dd>{item.name}</dd>
+          </dl>
+          <dl>
+            <dt className="font-semibold">説明</dt>
+            <dd>{item.description}</dd>
+          </dl>
+          <dl>
+            <dt className="font-semibold">カテゴリ</dt>
+            <dd>{item.categoryName}</dd>
+          </dl>
+        </div>
+      }
     </div>
   )
 }
