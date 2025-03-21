@@ -4,6 +4,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import DialogDetail from '@/components/dialog'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList
+} from "@/components/ui/breadcrumb"
 
 type Props = {
   id: string
@@ -54,6 +60,13 @@ export function ItemsDetail({ id }: Props) {
 
   return (
     <div className="px-12 py-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <h1 className="border-b-3 p-2 mb-4 font-semibold text-lg">
         情報詳細
       </h1>

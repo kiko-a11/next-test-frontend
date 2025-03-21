@@ -25,6 +25,14 @@ import { Input } from '@/components/ui/input'
 import { Categories } from '@/types/categories'
 import { useState, useEffect } from 'react'
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+
 import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
@@ -110,6 +118,21 @@ export function RegisterItems({ id = '' }: Props) {
 
   return (
     <div className="px-12 py-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          {id &&
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={`/items/${id}`}>情報詳細</BreadcrumbLink>
+              </BreadcrumbItem>
+            </>
+          }
+        </BreadcrumbList>
+      </Breadcrumb>
       <h1 className="border-b-3 p-2 mb-4 font-semibold text-lg">
         { id ? '情報編集' : '新規登録' }
       </h1>
