@@ -12,3 +12,9 @@ services:
       - .env
     ports:
       - "3000:3000"
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    external: true  
