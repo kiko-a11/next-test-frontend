@@ -42,10 +42,11 @@ const formSchema = z.object({
 })
 
 type Props = {
+  categories: Array<Categories>
   id?: string
 }
 
-export function RegisterItems({ id = '' }: Props) {
+export function RegisterItems({ categories, id = '' }: Props) {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,23 +62,17 @@ export function RegisterItems({ id = '' }: Props) {
   const [isError, setError] = useState(false)
   const [isLoading , setIsLoading ] = useState(true)
 
-  const [categories, setCategories] = useState<Array<Categories>>([])
-  useEffect(() => {    
-    fetch('/api/v1/categories/')
-    .then((res) => res.json())
-    .then((data) => {
-      setCategories(data)
-      if (id) {
-        fetch(`/api/v1/items/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          form.reset(data)
-          setIsLoading (false)
-        })
-      } else {
+  useEffect(() => {
+    if (id) {
+      fetch(`/api/v1/items/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        form.reset(data)
         setIsLoading (false)
-      }
-    })
+      })
+    } else {
+      setIsLoading (false)
+    }
   }, [form, id])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
